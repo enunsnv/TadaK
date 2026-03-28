@@ -22,8 +22,10 @@ export default function StartScreen({
       dark:from-black dark:to-gray-900"
     >
       <h1 className="text-4xl font-bold tracking-widest text-gray-900 dark:text-white">
-        TadaK
-        <span className="ml-2 text-lg text-gray-400">カチャ</span>
+        ㅌㅏㄷㅏㄱ
+        <span className="ml-2 text-lg text-gray-400">
+          ターダク
+        </span>
       </h1>
 
       <div className="flex gap-3 flex-wrap justify-center">

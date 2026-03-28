@@ -3,15 +3,36 @@ import { useEffect, useState } from "react";
 
 export default function Splash({ fadeOut }: { fadeOut: boolean }) {
   const [text, setText] = useState("");
-  const fullText = "TadaK";
+  const fullText = "ㅌㅏㄷㅏㄱ";
 
   useEffect(() => {
-    let i = 0;
+    const steps = [
+      "ㅌ",
+      "ㅌㅏ",
+      "ㅌㅏㄷ",
+      "ㅌㅏㄷㅏ",
+      "ㅌㅏㄷㅏㄱ",
+      "ター",
+      "ターダ",
+      "ターダク",
+    ];
+
+    let index = 0;
+    let loop = 0;
 
     const interval = setInterval(() => {
-      setText(fullText.slice(0, i + 1));
-      i++;
-      if (i === fullText.length) clearInterval(interval);
+      setText(steps[index]);
+
+      index++;
+
+      if (index === steps.length) {
+        index = 0;
+        loop++;
+
+        if (loop >= 3) {
+          clearInterval(interval);
+        }
+      }
     }, 200);
 
     return () => clearInterval(interval);
