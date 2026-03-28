@@ -153,7 +153,7 @@ export default function Typing() {
         })}
       </div>
 
-      <div className="text-lg text-gray-500">{current.jp}</div>
+      <div className="text-2xl text-gray-500">{current.jp}</div>
 
       <input
         type="text"
