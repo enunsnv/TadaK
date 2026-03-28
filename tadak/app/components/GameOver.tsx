@@ -20,9 +20,25 @@ export default function GameOver({
 
   const imgIndex = Math.floor(Math.random() * 5) + 1;
 
-  const imgSrc = isHighScore
-    ? `/correct/correct-${imgIndex}.jpg`
-    : `/wrong/wrong-${imgIndex}.jpg`;
+  const imgFiles = isHighScore
+    ? [
+        "correct-1.jpg",
+        "correct-2.gif",
+        "correct-3.jpg",
+        "correct-4.jpg",
+        "correct-5.png",
+      ]
+    : [
+        "wrong-1.png",
+        "wrong-2.jpg",
+        "wrong-3.jpg",
+        "wrong-4.jpg",
+        "wrong-5.jpg",
+      ];
+
+  const imgFile = imgFiles[imgIndex - 1];
+
+  const isGif = imgFile.endsWith(".gif");
 
   return (
     <div
@@ -54,12 +70,20 @@ export default function GameOver({
         </div>
 
         <div className="w-80 h-80 relative">
-          <Image
-            src={imgSrc}
-            alt={isHighScore ? "정답 이미지" : "오답 이미지"}
-            fill
-            className="object-contain rounded-lg shadow-lg"
-          />
+          {isGif ? (
+            <img
+              src={`/${isHighScore ? "correct" : "wrong"}/${imgFile}`}
+              alt={isHighScore ? "잘했어요" : "아쉬워요"}
+              className="object-contain w-full h-full rounded-lg shadow-lg"
+            />
+          ) : (
+            <Image
+              src={`/${isHighScore ? "correct" : "wrong"}/${imgFile}`}
+              alt={isHighScore ? "잘했어요" : "아쉬워요"}
+              fill
+              className="object-contain rounded-lg shadow-lg"
+            />
+          )}
         </div>
 
         {/* 메시지 */}
