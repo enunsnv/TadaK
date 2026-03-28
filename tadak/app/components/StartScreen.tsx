@@ -4,6 +4,7 @@ type Props = {
   selectedTime: number;
   setSelectedTime: (time: number) => void;
   onStart: () => void;
+  isReady: boolean; // ✅ 추가
 };
 
 export default function StartScreen({
