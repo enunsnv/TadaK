@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 
+import StartScreen from "@/app/components/StartScreen";
+import Timer from "@/app/components/Timer";
+
 type Word = {
   ko: string;
   jp: string;
@@ -16,6 +19,11 @@ export default function Typing() {
   const [streak, setStreak] = useState(0);
   const [isWrong, setIsWrong] = useState(false);
 
+  const [isStarted, setIsStarted] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(60);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+
   useEffect(() => {
     setMounted(true);
 
@@ -23,7 +31,6 @@ export default function Typing() {
       .then((res) => res.json())
       .then((data) => {
         setWords(data);
-        setCurrent(getRandomWord(data));
       });
   }, []);
 
@@ -38,7 +45,26 @@ export default function Typing() {
     setIsWrong(false);
   };
 
+  const handleStart = () => {
+    if (!words.length) return;
+
+    setIsStarted(true);
+    setIsRunning(true);
+    setIsGameOver(false);
+    setScore(0);
+    setStreak(0);
+
+    setCurrent(getRandomWord(words));
+  };
+
+  const handleTimeEnd = () => {
+    setIsRunning(false);
+    setIsGameOver(true);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isRunning) return;
+
     const value = e.target.value;
     setInput(value);
 
@@ -61,7 +87,7 @@ export default function Typing() {
 
       setTimeout(() => {
         nextQuestion();
-      }, 500);
+      }, 300);
     } else {
       setIsWrong(true);
       setStreak(0);
@@ -69,10 +95,43 @@ export default function Typing() {
   };
 
   if (!mounted) return null;
-  if (!current) return <div>Loading...</div>;
+
+  if (!isStarted) {
+    return (
+      <StartScreen
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        onStart={handleStart}
+        isReady={words.length > 0}
+      />
+    );
+  }
+
+  if (isGameOver) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <h2 className="text-2xl font-bold">게임 종료 🎉</h2>
+        <p className="text-lg">최종 점수: {score}</p>
+        <button
+          onClick={() => setIsStarted(false)}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          다시 하기
+        </button>
+      </div>
+    );
+  }
+
+  if (!current) return <div>화이팅 ~ 곧 나옵니다</div>;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-6 p-4">
+      <Timer
+        duration={selectedTime}
+        onEnd={handleTimeEnd}
+        isRunning={isRunning}
+      />
+
       <div className="flex gap-6 text-lg font-semibold">
         <span>점수: {score}</span>
         <span>🔥 {streak}</span>
@@ -100,6 +159,7 @@ export default function Typing() {
         type="text"
         value={input}
         onChange={handleChange}
+        disabled={!isRunning}
         className={`border p-3 text-lg w-full max-w-md rounded transition ${
           isWrong ? "border-red-500" : "border-gray-300"
         }`}
