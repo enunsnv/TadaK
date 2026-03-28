@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import StartScreen from "@/app/components/StartScreen";
 import Timer from "@/app/components/Timer";
+import { decompose } from "@/app/utils/hangul";
 
 type Word = {
   ko: string;
@@ -62,21 +63,22 @@ export default function Typing() {
     setIsGameOver(true);
   };
 
+  const isFilled = current ? input.length === current.ko.length : false;
+  const isCorrect = current ? input === current.ko : false;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isRunning) return;
 
     const value = e.target.value;
+
+    if (current && value.length > current.ko.length) return;
+
     setInput(value);
 
     if (!current) return;
 
     if (value.length < current.ko.length) {
-      if (!current.ko.startsWith(value)) {
-        setIsWrong(true);
-        setStreak(0);
-      } else {
-        setIsWrong(false);
-      }
+      setIsWrong(false);
       return;
     }
 
@@ -142,7 +144,16 @@ export default function Typing() {
           let color = "text-gray-400";
 
           if (idx < input.length) {
-            color = input[idx] === char ? "text-green-500" : "text-red-500";
+            const inputChar = input[idx];
+
+            const target = decompose(char).join("");
+            const typed = decompose(inputChar).join("");
+
+            if (target.startsWith(typed)) {
+              color = "text-gray-700";
+            } else {
+              color = "text-red-700";
+            }
           }
 
           return (
@@ -167,7 +178,7 @@ export default function Typing() {
       />
 
       <div className="h-6">
-        {!isWrong && input === current.ko && (
+        {isFilled && isCorrect && (
           <p className="text-green-500">정답입니다! 🎉</p>
         )}
       </div>
