@@ -167,6 +167,7 @@ export default function Typing() {
       <div className="text-2xl text-gray-500">{current.jp}</div>
 
       <input
+        key={current?.ko}
         type="text"
         value={input}
         onChange={handleChange}
