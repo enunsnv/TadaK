@@ -14,6 +14,7 @@ export default function Typing() {
 
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [isWrong, setIsWrong] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -34,6 +35,7 @@ export default function Typing() {
     if (!words.length) return;
     setCurrent(getRandomWord(words));
     setInput("");
+    setIsWrong(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,18 +44,27 @@ export default function Typing() {
 
     if (!current) return;
 
-    if (!current.ko.startsWith(value)) {
-      setStreak(0);
+    if (value.length < current.ko.length) {
+      if (!current.ko.startsWith(value)) {
+        setIsWrong(true);
+        setStreak(0);
+      } else {
+        setIsWrong(false);
+      }
       return;
     }
 
     if (value === current.ko) {
       setScore((prev) => prev + 10);
       setStreak((prev) => prev + 1);
+      setIsWrong(false);
 
       setTimeout(() => {
         nextQuestion();
       }, 500);
+    } else {
+      setIsWrong(true);
+      setStreak(0);
     }
   };
 
@@ -89,14 +100,17 @@ export default function Typing() {
         type="text"
         value={input}
         onChange={handleChange}
-        className="border p-3 text-lg w-full max-w-md rounded"
+        className={`border p-3 text-lg w-full max-w-md rounded transition ${
+          isWrong ? "border-red-500" : "border-gray-300"
+        }`}
         placeholder="여기에 입력하세요..."
       />
 
-      {input && !current.ko.startsWith(input) && (
-        <p className="text-red-500">틀렸어요 ❌</p>
-      )}
-      {input === current.ko && <p className="text-green-500">정답입니다! 🎉</p>}
+      <div className="h-6">
+        {!isWrong && input === current.ko && (
+          <p className="text-green-500">정답입니다! 🎉</p>
+        )}
+      </div>
     </div>
   );
 }
