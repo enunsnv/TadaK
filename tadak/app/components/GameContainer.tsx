@@ -11,6 +11,8 @@ export type Word = {
   jp: string;
 };
 
+
+
 export default function GameContainer() {
   const [phase, setPhase] = useState<
     "splash" | "ready" | "playing" | "gameover"
@@ -29,6 +31,7 @@ export default function GameContainer() {
   const [isRunning, setIsRunning] = useState(false);
 
   const [selectedTime, setSelectedTime] = useState(60);
+  
 
   useEffect(() => {
     setMounted(true);

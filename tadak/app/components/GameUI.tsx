@@ -78,7 +78,7 @@ export default function GameUI({
           transition-all
           ${
             isWrong
-              ? "border-red-700"
+              ? "border-red-700 text-red-700"
               : "border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-gray-900 dark:focus:border-white"
           }
         `}
