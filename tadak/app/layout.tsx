@@ -40,7 +40,7 @@ export default function RootLayout({
     >
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5178512088906089"
-     crossorigin="anonymous"></script>
+     crossOrigin="anonymous"></script>
       </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
