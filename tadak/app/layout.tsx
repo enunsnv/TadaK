@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ㅌㅏㄷㅏㄱ ターダ크",
+  title: "ㅌㅏㄷㅏㄱ ターダク",
   description: "한국어/일본어 타자 연습 웹앱",
   openGraph: {
-    title: "ㅌㅏㄷㅏㄱ ターダ크",
+    title: "ㅌㅏㄷㅏㄱ ターダク",
     description: "한국어/일본어 타자 연습 웹앱",
     images: [
       {
